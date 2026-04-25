@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Student</string>
+    <string name="students_title">Student List</string>
+    <string name="loading_students">Loading students...</string>
+    <string name="students_loaded">Students loaded: %1$d</string>
+    <string name="students_empty">No students found</string>
+    <string name="students_error">Error loading students</string>
+    <string name="refresh">Refresh</string>
+    <string name="api_url_hint">https://your-server.com/api/students</string>
+    <string name="save_server_url">Save Server URL</string>
+    <string name="server_url_saved">Server URL saved</string>
+    <string name="invalid_server_url">Enter valid URL (http/https)</string>
+    <string name="label_email">Email: %1$s</string>
+    <string name="label_phone">Phone: %1$s</string>
+    <string name="label_address">Address: %1$s</string>
+</resources>
