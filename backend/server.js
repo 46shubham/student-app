@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const mysql = require("mysql2/promise");
+const { Pool } = require("pg");
 require("dotenv").config();
 
 const app = express();
@@ -8,21 +8,26 @@ app.use(cors());
 app.use(express.json());
 
 const port = Number(process.env.PORT || process.env.API_PORT || 3000);
+// If env is missing/misloaded, fallback keeps app working.
+const apiReadToken = (process.env.API_READ_TOKEN || "student_read_only_2026_secure").trim();
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  port: Number(process.env.DB_PORT || 3306),
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "student_app_db",
-  waitForConnections: true,
-  connectionLimit: 10,
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : undefined,
+  max: Number(process.env.DB_POOL_MAX || 10),
 });
 
-if (!process.env.DB_PASSWORD) {
-  console.warn(
-    "Warning: DB_PASSWORD is empty. If MySQL root has a password, set it in backend/.env"
-  );
+function isAuthorizedRequest(req) {
+  if (!apiReadToken) return true;
+
+  const authHeader = req.get("authorization") || "";
+  const apiKeyHeader = req.get("x-api-key") || "";
+
+  const bearer = authHeader.startsWith("Bearer ")
+    ? authHeader.slice("Bearer ".length).trim()
+    : "";
+
+  return bearer.trim() === apiReadToken || apiKeyHeader.trim() === apiReadToken;
 }
 
 app.get("/api/health", async (_req, res) => {
@@ -35,8 +40,12 @@ app.get("/api/health", async (_req, res) => {
 });
 
 app.get("/api/students", async (_req, res) => {
+  if (!isAuthorizedRequest(_req)) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
   try {
-    const [rows] = await pool.query(
+    const { rows } = await pool.query(
       "SELECT id, name, email, phone, address, created_at FROM students ORDER BY id DESC"
     );
     res.json(rows);

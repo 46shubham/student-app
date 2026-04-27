@@ -40,19 +40,18 @@
         android:layout_marginTop="8dp"
         android:text="@string/save_server_url" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerStudents"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
-        android:layout_weight="1"
-        tools:listitem="@layout/item_student" />
+        android:layout_weight="1">
 
-    <Button
-        android:id="@+id/btnRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/refresh" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerStudents"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_student" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

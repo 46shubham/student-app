@@ -1,28 +1,18 @@
-# Deploy Student API (Render or Railway)
+# Deploy Student API (Real server, free)
 
 ## Important
 
 Cloud deploy cannot use your local MySQL (`127.0.0.1`).  
-Use a cloud MySQL database and set its credentials in environment variables.
+For a real 24/7 server, use a cloud database. The most reliable free option is **PostgreSQL** (Neon/Supabase).
 
-## 1) Railway (recommended easiest)
+## 1) Create free Postgres (Neon or Supabase)
 
-1. Push this project to GitHub.
-2. In Railway, create a new project.
-3. Add **MySQL** service in Railway.
-4. Add a new service from GitHub repo and set **Root Directory** as `backend`.
-5. In service variables set:
-   - `DB_HOST` = Railway MySQL host
-   - `DB_PORT` = Railway MySQL port
-   - `DB_USER` = Railway MySQL user
-   - `DB_PASSWORD` = Railway MySQL password
-   - `DB_NAME` = `student_app_db`
-6. Deploy.
-7. Open Railway generated URL and test:
-   - `/api/health`
-   - `/api/students`
+- Neon: create a project → copy the connection string (DATABASE_URL)
+- Supabase: create a project → Settings → Database → connection string
 
-## 2) Render
+Then run the SQL from `schema_postgres.sql` to create `students` table.
+
+## 2) Deploy backend on Render (free)
 
 1. Push this project to GitHub.
 2. In Render, create **Web Service** from repo.
@@ -31,7 +21,9 @@ Use a cloud MySQL database and set its credentials in environment variables.
    - Build command: `npm install`
    - Start command: `npm start`
 4. Set env vars in Render dashboard:
-   - `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
+   - `DATABASE_URL` = your Postgres connection string
+   - `DB_SSL` = `true` (usually required)
+   - `API_READ_TOKEN` = your private token
 5. Deploy and test:
    - `/api/health`
    - `/api/students`
@@ -42,4 +34,4 @@ In app:
 1. Paste URL in API URL box, for example:
    - `https://your-service-domain/api/students`
 2. Tap **Save Server URL**
-3. Tap **Refresh**
+3. Pull down (swipe) to refresh
