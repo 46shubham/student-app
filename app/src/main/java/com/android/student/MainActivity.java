@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String DEFAULT_STUDENTS_API_URL = "https://dodge-sie-reynolds-measuring.trycloudflare.com/api/students";
+    private static final String DEFAULT_STUDENTS_API_URL = "https://student-api-sig1.onrender.com/api/students";
     private static final String API_READ_TOKEN = "student_read_only_2026_secure";
     // Fallback for same-WiFi cases where trycloudflare is blocked by router/DNS.
     private static final String LOCAL_FALLBACK_API_URL = "http://192.168.0.106:3000/api/students";
