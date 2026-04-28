@@ -1,0 +1,1 @@
+https://example.trycloudflare.com/api/students
